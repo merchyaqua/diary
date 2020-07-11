@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quote
+{% endblock %}
+
+{% block main %}
+    <form action="/quote" method="post">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="symbol" placeholder="Symbol" type="text">
+        </div>
+        <button class="btn btn-primary" type="submit">Quote</button>
+    </form>
+    {% if quoted %}
+    <br>
+        A share of {{ name }} ({{ symbol }}) costs ${{ price }}.<br>
+        You can buy at most {{ (cash/price)|int }} shares with your current amount of cash.<br>
+    {% endif %}
+    <br>
+        <h3 style='padding-right: 5px;'>Recently quoted stocks
+            <form action='/quote' method='post' style='display: inline;'>
+                <button class='form-control' value='clear' style='position: relative; font-size: 50%;'
+                        onclick='this.form.submit()' name='clear'>Clear
+                </button>
+            </form>
+        </h3>
+
+    <table class='table'>
+        <thead>
+            <th>Symbol</th>
+            <th>Name</th>
+            <th>Price</th>
+        </thead>
+        <tbody>
+            {% for row in recent %}
+                <tr>
+                    <td>{{ row["symbol"] }}</td>
+                    <td>{{ row["name"] }}</td>
+                    <td>{{ row["price"] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+{% endblock %}

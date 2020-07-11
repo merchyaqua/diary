@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    History
+{% endblock %}
+
+{% block main %}
+<h4>Transaction history<form action="history" method="POST" style='display:inline; padding:3px;'>
+                        <select name='sort' class="form-control" id='hist' style='font-size: 70%; height:3%; width:1%;' onchange="this.form.submit()">
+                            <option style='font-style:bold;'disabled selected value=''>Sorting</option>
+                            <option value='ASC'>Earliest first</option>
+                            <option value='DESC'>Latest first</option>
+                            <option value='CLEAR'>Clear</option>
+                        </select>
+                    </div>
+                </form></h4>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Symbol</th>
+                <th>Shares</th>
+                <th>Price</th>
+                <th>Transacted</th>
+                <th id='shorterpls'>Bought/Sold
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in table %}
+                <tr>
+                    <td>{{ row["symbol"] }}</td>
+                    <td>{{ row["shares"] }}</td>
+                    <td>${{ row["price"] }}</td>
+                    <td>{{ row["transacted"] }}</td>
+                    <td>{{ row["bs"] }}</td>
+                    <td> </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
