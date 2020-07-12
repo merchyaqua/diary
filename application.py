@@ -1,5 +1,7 @@
 import os
 import re
+import psycopg2
+
 
 from cs50 import SQL
 from flask import Flask, flash, jsonify, redirect, render_template, request, session
@@ -36,8 +38,12 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure CS50 Library to use SQLite database
-db = SQL("postgres://awywxapixuwmgj:69d423becb0ed39ecf4493a9beaf3589c02784505c7937dd61129f206139be46@ec2-54-236-169-55.compute-1.amazonaws.com:5432/d290ae7p5vcp2v")
+# db = SQL("postgres://awywxapixuwmgj:69d423becb0ed39ecf4493a9beaf3589c02784505c7937dd61129f206139be46@ec2-54-236-169-55.compute-1.amazonaws.com:5432/d290ae7p5vcp2v")
 
+
+connection = psycopg2.connect(database="dbname", user="username", password="pass", host="hostname", port=5432)
+
+db = connection.cursor()
 # Make sure API key is set
 if not os.environ.get("API_KEY"):
     raise RuntimeError("API_KEY not set")
