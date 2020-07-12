@@ -53,10 +53,7 @@ def index():
         li[i].update({"price": usd(lookup(li[i]["symbol"])["price"]), "total": usd(
             int(li[i]["shares"]) * lookup(li[i]["symbol"])["price"])})
         total += int(li[i]["shares"]) * lookup(li[i]["symbol"])["price"]
-    if db.execute("SELECT cash FROM users WHERE id = :i", i=session["user_id"]):
-        cash = db.execute("SELECT cash FROM users WHERE id = :i", i=session["user_id"])[0]['cash']
-    else:
-        cash = None
+    cash = db.execute("SELECT cash FROM users WHERE id = :i", i=session["user_id"])[0]['cash']
     return render_template("index.html", table=li, cash=usd(cash), total=usd(total+cash), username=session["user_id"])
 
 
@@ -237,7 +234,7 @@ def register():
         elif pw != request.form.get("confirmation"):
             return apology("password don't match", 403)
         # database
-        db.execute("INSERT INTO users (username, hash, length) VALUES (:u, :p, :l)",
+        db.execute("INSERT INTO 'users' ('username', 'hash', 'length') VALUES (:u, :p, :l)",
                    u=un, p=generate_password_hash(pw), l=len(pw))
         # Remember which user has logged in
         session["user_id"] = db.execute("SELECT id FROM users WHERE username = :username",
