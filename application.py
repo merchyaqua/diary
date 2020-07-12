@@ -47,7 +47,7 @@ if not os.environ.get("API_KEY"):
 @login_required
 def index():
     """Show portfolio of stocks"""
-    li = db.execute("SELECT * FROM :n WHERE shares > 0", n=session["username"])
+    li = db.execute("SELECT * FROM stocks WHERE shares > 0 AND id = :n", n=session["username"])
     total = 0
     for i in range(len(li)):
         li[i].update({"price": usd(lookup(li[i]["symbol"])["price"]), "total": usd(
@@ -78,19 +78,19 @@ def buy():
         # cashcheckd
         if cash < total:
             return apology("you don't have enough cash")
-        u = session["username"]
+        u = session["user_id"]
         # pay
-        db.execute("UPDATE users SET cash = :v WHERE username = :u", v=cash-total, u=u)
+        db.execute("UPDATE users SET cash = :v WHERE id = :u", v=cash-total, u=u)
         # update status, add the stock if not exist
         symbol = results["symbol"]
         # check if it exists
-        if len(db.execute("SELECT * FROM :u WHERE symbol = :s", u=u, s=symbol)) != 1:
-            db.execute("INSERT INTO :u (symbol, name, shares) VALUES (:s, :n, :sh)", u=u, s=symbol, n=results["name"], sh=shares)
+        if len(db.execute("SELECT * FROM stocks WHERE symbol = :s AND id = :u", u=u, s=symbol)) != 1:
+            db.execute("INSERT INTO stocks (id, symbol, name, shares) VALUES (:u, :s, :n, :sh)", u=u, s=symbol, n=results["name"], sh=shares)
         else:
-            db.execute("UPDATE :u SET shares = shares + :sh WHERE symbol = :s", u=u, s=symbol, sh=shares)
+            db.execute("UPDATE stocks SET shares = shares + :sh WHERE symbol = :s AND id = :u", u=u, s=symbol, sh=shares)
         # record time and stuff
         db.execute("INSERT INTO history (symbol, shares, price, id, bs) VALUES (:s, :sh, :p, :i, 'Bought')",
-                   s=symbol, sh=shares, p=results["price"], i=session["user_id"])
+                   s=symbol, sh=shares, p=results["price"], i=u)
         return redirect("/")
     return render_template("buy.html")
 
@@ -237,7 +237,6 @@ def register():
         # database
         db.execute("INSERT INTO users (username, hash, length) VALUES (:u, :p, :l)",
                    u=un, p=generate_password_hash(pw), l=len(pw))
-        db.execute("CREATE TABLE :u (symbol, name, shares)", u=un)
         # Remember which user has logged in
         session["user_id"] = db.execute("SELECT id FROM users WHERE username = :username",
                                         username=un)[0]["id"]
@@ -258,11 +257,11 @@ def sell():
         shares = request.form.get("shares")
         if not s or not shares:
             return apology("must provide all information")
-        sh = db.execute("SELECT shares FROM :u WHERE symbol = :s", u=session["username"], s=s)[0]["shares"]
+        sh = db.execute("SELECT shares FROM stocks WHERE symbol = :s AND id = :u", u=session["user_id"], s=s)[0]["shares"]
         if int(shares) > int(sh):
             return apology(f"you don't have that many shares{shares}{sh}")
         # subtract the amount of shares
-        db.execute("UPDATE :u SET shares = shares - :sh WHERE symbol = :s", u=session["username"], sh=shares, s=s)
+        db.execute("UPDATE stocks SET shares = shares - :sh WHERE symbol = :s AND id = :u", u=session["user_id"], sh=shares, s=s)
         # add money
         db.execute("UPDATE users SET cash = cash + :stp WHERE id = :i", stp=int(shares) * lookup(s)["price"], i=session["user_id"])
         # record time and stuff
@@ -270,7 +269,7 @@ def sell():
                    s=s, sh=shares, p=lookup(s)["price"], i=session["user_id"])
 
         return redirect("/")
-    li = db.execute("SELECT symbol, shares FROM :u WHERE shares > 0", u=session["username"])
+    li = db.execute("SELECT symbol, shares FROM stocks WHERE shares > 0 AND id = :u", u=session["user_id"])
     return render_template("sell.html", li=li)
 
 
@@ -297,8 +296,6 @@ def account():
             if db.execute("SELECT * FROM users WHERE username = :un", un=un):
                 return apology("username is taken")
             db.execute("UPDATE users SET username = :un WHERE id = :i", un=un, i=session["user_id"])
-            db.execute("ALTER TABLE :u RENAME TO :un", u=session["username"], un=un)
-            session["username"] = un
     length = db.execute("SELECT length FROM users WHERE id = :u", u=session["user_id"])[0]["length"]
     return render_template("account.html", cash=usd(db.execute("SELECT cash FROM users WHERE id = :u", u=session["user_id"])[0]["cash"]), stars="*" * length)
 
