@@ -234,7 +234,7 @@ def register():
         elif pw != request.form.get("confirmation"):
             return apology("password don't match", 403)
         # database
-        db.execute("INSERT INTO 'users' ('username', 'hash', 'length') VALUES (:u, :p, :l)",
+        db.execute("INSERT INTO users ('username', 'hash', 'length') VALUES (:u, :p, :l)",
                    u=un, p=generate_password_hash(pw), l=len(pw))
         # Remember which user has logged in
         session["user_id"] = db.execute("SELECT id FROM users WHERE username = :username",
