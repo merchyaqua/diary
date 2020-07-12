@@ -47,7 +47,7 @@ if not os.environ.get("API_KEY"):
 @login_required
 def index():
     """Show portfolio of stocks"""
-    li = db.execute("SELECT * FROM stocks WHERE shares > 0 AND id = :n", n=session["username"])
+    li = db.execute("SELECT * FROM stocks WHERE shares > 0 AND id = :n", n=session["user_id"])
     total = 0
     for i in range(len(li)):
         li[i].update({"price": usd(lookup(li[i]["symbol"])["price"]), "total": usd(
@@ -55,7 +55,7 @@ def index():
         total += int(li[i]["shares"]) * lookup(li[i]["symbol"])["price"]
 
     cash = db.execute("SELECT cash FROM users WHERE id = :i", i=session["user_id"])[0]['cash']
-    return render_template("index.html", table=li, cash=usd(cash), total=usd(total+cash), username=session["username"])
+    return render_template("index.html", table=li, cash=usd(cash), total=usd(total+cash), username=session["user_id"])
 
 
 @app.route("/buy", methods=["GET", "POST"])
