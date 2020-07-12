@@ -13,6 +13,9 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from helpers import apology, login_required, lookup, usd
 
 # export API_KEY=pk_5e7c41f93dd44c5486a30f99daadfbd3
+"""git push
+merchyaqua
+1ceaMaryknoler"""
 # Configure application
 app = Flask(__name__)
 
@@ -41,7 +44,7 @@ Session(app)
 # db = SQL("postgres://awywxapixuwmgj:69d423becb0ed39ecf4493a9beaf3589c02784505c7937dd61129f206139be46@ec2-54-236-169-55.compute-1.amazonaws.com:5432/d290ae7p5vcp2v")
 
 
-connection = psycopg2.connect(database="dbname", user="username", password="pass", host="hostname", port=5432)
+connection = psycopg2.connect(database="d290ae7p5vcp2v", user="awywxapixuwmgj", password="69d423becb0ed39ecf4493a9beaf3589c02784505c7937dd61129f206139be46", host="ec2-54-236-169-55.compute-1.amazonaws.com", port=5432)
 
 db = connection.cursor()
 # Make sure API key is set
