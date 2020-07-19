@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    New Entry
+{% endblock %}
+
+{% block main %}
+    <h4>New Entry</h4>
+    <form action="/new" method="post" class="pure-form">
+        <fieldset class="form-group">
+            <input autocomplete="off" autofocus type="text" class="pure-input-1-2" name='title' placeholder="A title(optional)" />
+            <textarea autocomplete="off" autofocus rows='18' class="pure-input-1-2 " name='entry' placeholder="Write your entry here!"></textarea>
+        </fieldset>
+        <button type="submit" class="pure-button pure-input-1-2 pure-button-primary" style="background-color: #9112ff">Create your {{ amount }} entry!</button>
+    </form>
+{% endblock %}

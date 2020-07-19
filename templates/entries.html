@@ -1,11 +1,11 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    History
+    Your Entries
 {% endblock %}
 
 {% block main %}
-<h4>Transaction history<form action="history" method="POST" style='display:inline; padding:3px;'>
+<h4>Entries<form action="history" method="POST" style='display:inline; padding:3px;'>
                         <select name='sort' class="form-control" id='hist' style='font-size: 70%; height:3%; width:1%;' onchange="this.form.submit()">
                             <option style='font-style:bold;'disabled selected value=''>Sorting</option>
                             <option value='ASC'>Earliest first</option>
@@ -17,23 +17,21 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Symbol</th>
-                <th>Shares</th>
-                <th>Price</th>
-                <th>Transacted</th>
-                <th id='shorterpls'>Bought/Sold
-                </th>
+                <th>Title</th>
+                <th>Date</th>
             </tr>
         </thead>
         <tbody>
-            {% for row in table %}
+            {% for row in entries %}
                 <tr>
-                    <td>{{ row["symbol"] }}</td>
-                    <td>{{ row["shares"] }}</td>
-                    <td>${{ row["price"] }}</td>
-                    <td>{{ row["transacted"] }}</td>
-                    <td>{{ row["bs"] }}</td>
-                    <td> </td>
+                    <td>{{ row["title"] }}</td>
+                    <td>{{ row["date"] }}</td>
+                    <td><form action='/entries' method='POST' style='display: inline;'>
+                        <button class='form-control' value='clear' style='position: relative; font-size: 50%;'
+                        onclick='this.form.submit()' name='clear'>viEW
+                    </button>
+                    </form>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

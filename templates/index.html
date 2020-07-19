@@ -5,39 +5,14 @@
 {% endblock %}
 
 {% block main %}
-    <h4>Your stocks:</h4>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Symbol</th>
-                <th>Name</th>
-                <th>Shares</th>
-                <th>Price</th>
-                <th>TOTAL</th>
+    <h3>Welcome back!</h3>
+    {% if amount != 0 %}
+        <p>You have {{ amount }}entries.</p>
+    {% elif not today %}
+        <p>You haven't written today's entry. Create it <a href='/new'>here</a>!</p>
+    {% else %}
+        <p>You have no entries yet. Go <a href='new'>create</a> one!</p>
+    {% endif %}
 
-            </tr>
-        </thead>
-        <tfoot>
-            <tr>
-                <td colspan="4">CASH</td>
-                <td>{{ cash }}</td>
-            </tr>
-            <tr>
-                <td colspan="4"></td>
-                <td>{{ total }} </td>
-            </tr>
-        </tfoot>
-        <tbody id='myUL'>
-            {% for row in table %}
-                <tr>
-                    <td class='symbol'>{{ row["symbol"] }}</td>
-                    <td>{{ row["name"] }}</td>
-                    <td>{{ row["shares"] }}</td>
-                    <td>{{ row["price"] }}</td>
-                    <td>{{ row["total"] }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
 
 {% endblock %}

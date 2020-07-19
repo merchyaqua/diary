@@ -1,27 +1,28 @@
 nav .navbar-brand
 {
     /* size for brand */
+    font-family: "Georgia", serif;
     font-size: xx-large;
+    padding-right: 5px;
+    padding-left: 5px;
 }
 
 /* colors for brand */
-nav .navbar-brand .blue
+nav .navbar-brand .purple
 {
-    color: #537fbe;
+    color: #003C8F;
+    font-family: serif;
 }
 nav .navbar-brand .red
 {
-    color: #ea433b;
+    color: #FF9F00;
 }
-nav .navbar-brand .yellow
-{
-    color: #f5b82e;
+.nav-link{
+    color: #c17aff;
 }
-nav .navbar-brand .green
-{
-    color: #2e944b;
+.nav-link:hover{
+    background: #FFFBA4;
 }
-
 main .form-control
 {
     /* center form controls */
@@ -38,6 +39,11 @@ main .form-control
     position: absolute;
 }
 
+nav
+{
+    border-bottom: 3px solid #F8CD8F;
+    background-color: #FFFFFF;
+}
 main
 {
     /* scroll horizontally as needed */
@@ -66,4 +72,22 @@ main tfoot
 {
     /* boldface tables' footers */
     font-weight: bold;
+}
+
+.button-normal {
+    color: white;
+    border-radius: 4px;
+    background: #5b79e5;
+    /* this is an orange */
+}
+
+BODY{
+    background: #FFF8EE;
+}
+h3, h4{
+    font-family: "Georgia", serif;
+}
+a
+{
+    color: #7cb3ff;
 }

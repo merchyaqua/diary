@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block main %}
-    <h4> My account</h4>
+    <h4> Your account</h4>
     <table class="table table">
         <tr>
             <th>User ID:</th>
@@ -16,9 +16,9 @@
             <td>{{ session.username }}
 
             </td>
-            <td><form action='/account' style='display: inline;' method='post'>
-                        <input autocomplete="off" autofocus class="form-control" name="changeun" placeholder="New name(max. 15)" type="text">
-                    <button class="btn btn-primary" style='display: inline;' type="submit">Change</button>
+            <td><form action='/account' style='display: inline;' method='post' class="pure-form">
+                        <input autocomplete="off" autofocus class="pure-input-1-2" name="changeun" placeholder="New name(max. 15)" type="text">
+                    <button class="btn button-normal pure-button" style='display: inline;' type="submit">Change</button>
                 </form>
                 </td>
         </tr>
@@ -26,20 +26,11 @@
             <th>Password:</th>
             <td>{{ stars }}</td>
             <td>
-                <form action='/account' style='display: inline;' method='post'>
-                        <input autocomplete="off" autofocus class="form-control" name="changepw" placeholder="New password" type="text">
-                    <button class="btn btn-primary" style='display: inline;' type="submit">Change</button>
+                <form action='/account' style='display: inline;' method='post' class="pure-form">
+                        <input autocomplete="off" autofocus class="pure-input-1-2" name="changepw" placeholder="New password" type="text">
+                    <button class="btn button-normal pure-button" style='display: inline;' type="submit">Change</button>
                 </form>
             </td>
-        </tr>
-        <tr>
-            <th>Cash balance:</th>
-            <td>{{ cash }}
-            </td>
-            <td><form action='/account' method='post' style='display: inline;'>
-                        <input autocomplete="off" autofocus class="form-control" name="addcash" placeholder="Amount(max. 100,000)" type="number">
-                    <button class="btn btn-primary" type="submit">Add</button>
-                </form></td>
         </tr>
     </table>
 {% endblock %}
